@@ -1,17 +1,23 @@
-import styles from "./App.css";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { ChatList } from "./components/ChatList";
+import { MessageInput } from "./components/MessageInput";
+import { MessageList } from "./components/MessageList";
+
+const useStyles = makeStyles({
+	wrapper: {
+		display: "grid",
+		gridTemplateColumns: "200px 1fr",
+	},
+});
 
 let name = prompt("Как ваше имя?");
-
-const App = (props) => {
+export const App = () => {
+	const classes = useStyles();
 	const [messageList, setMessageList] = useState([]);
-	const [value, setValue] = useState("");
+	const [, setValue] = useState("");
 
-	const saveMessage = (event) => {
-		setValue(event.target.value);
-	};
-
-	const addMessage = (author, text) => {
+	const sendMessage = (author, text) => {
 		const newMessageList = [...messageList];
 		const newMessage = {
 			author,
@@ -21,38 +27,50 @@ const App = (props) => {
 		setMessageList(newMessageList);
 	};
 
-	const onSubmit = (e) => {
-		e.preventDefault();
-		addMessage(name, value);
+	const onSendMessage = (value) => {
+		sendMessage(name, value);
 		setValue("");
 	};
 
+	useEffect(() => {
+		if (messageList.length === 0) {
+			return;
+		}
+
+		const tail = messageList[messageList.length - 1];
+		if (tail.author === "bot") {
+			return;
+		}
+
+		sendMessage("bot", "hello");
+	}, [messageList]);
+
 	return (
-		<div className={styles.chatBox}>
-			<h2 className={styles.title}>{props.context}</h2>
-			<div className={styles.chat}>
-				<ul className={styles.ulList}>
-					{messageList.map((item) => (
-						<li className={styles.chatMessage}>
-							<span className={styles.author}>{item.author}</span>
-							: {item.text}
-						</li>
-					))}
-				</ul>
+		<div className={classes.wrapper}>
+			<ChatList
+				list={[
+					{
+						name: "name",
+						id: "1",
+					},
+					{
+						name: "name",
+						id: "1",
+					},
+					{
+						name: "name",
+						id: "1",
+					},
+					{
+						name: "name",
+						id: "1",
+					},
+				]}
+			/>
+			<div>
+				<MessageList messageList={messageList} />
+				<MessageInput onSend={onSendMessage} />
 			</div>
-			<form onSubmit={onSubmit} className={styles.form}>
-				<input
-					value={value}
-					onChange={saveMessage}
-					className={styles.input}
-					type="text"
-					placeholder="Введите сообщение"
-				/>
-				<button className={styles.button} type="submit">
-					Отправить
-				</button>
-			</form>
 		</div>
 	);
 };
-export default App;
