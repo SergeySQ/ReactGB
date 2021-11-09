@@ -1,6 +1,7 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { TOGGLE_SHOW_PROFILE } from "../../store/profile/action";
 import { makeStyles } from "@material-ui/core/styles";
-
 const useStyles = makeStyles(() => ({
 	contentStyle: {
 		fontSize: 35,
@@ -9,14 +10,24 @@ const useStyles = makeStyles(() => ({
 		justifyContent: "center",
 	},
 }));
-
 export const Profile = () => {
+	const dispatch = useDispatch();
+	const isShow = useSelector((state) => state.isShow);
 	const classes = useStyles();
 	return (
 		<div>
 			<h1 className={classes.contentStyle}>
 				М-м? Прыгаете из чата в чат, летаете как птицы?
 			</h1>
+			<input
+				type="checkbox"
+				checked={isShow}
+				onChange={() => {
+					dispatch({
+						type: TOGGLE_SHOW_PROFILE,
+					});
+				}}
+			/>
 		</div>
 	);
 };
