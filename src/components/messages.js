@@ -1,6 +1,6 @@
 import propTypes from "prop-types";
 
-export const Message = (props) => {
+export const Messages = (props) => {
 	return (
 		<div>
 			[{props.author}]: {props.text}
@@ -8,7 +8,7 @@ export const Message = (props) => {
 	);
 };
 
-Message.propTypes = {
+Messages.propTypes = {
 	text: propTypes.string,
 	author: propTypes.string,
 };
