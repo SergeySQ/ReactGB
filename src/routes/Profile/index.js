@@ -4,8 +4,8 @@ import { TOGGLE_SHOW_PROFILE } from "../../store/profile/action";
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
 	contentStyle: {
-		fontSize: 35,
-		color: "#4B0082",
+		color: "#8F8F8F",
+		fontSize: "48px",
 		display: "flex",
 		justifyContent: "center",
 	},
