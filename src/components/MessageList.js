@@ -1,11 +1,11 @@
 import propTypes from "prop-types";
-import { Messages } from "./Messages";
+import { Message } from "./message";
 
 export const MessageList = (props) => {
 	return (
 		<div>
 			{props.messageList.map((item) => (
-				<Messages key={item.id} {...item} />
+				<Message key={item.id} {...item} />
 			))}
 		</div>
 	);

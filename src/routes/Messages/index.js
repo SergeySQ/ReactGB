@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MessageInput } from "../../components/messageInput";
 import { MessageList } from "../../components/messageList";
 import { getChatMessagesById } from "../../store/messages/selectors";
-import { createMessage } from "../../store/messages/actions";
+import { addMessage } from "../../store/messages/actions";
 import { hasChatById } from "../../store/chats/selectors";
 
 export const Messages = () => {
@@ -12,20 +12,24 @@ export const Messages = () => {
 	const dispatch = useDispatch();
 	const messageList = useSelector(getChatMessagesById(chatId));
 	const hasChat = useSelector(hasChatById(chatId));
+
 	const sendMessage = (author, text) => {
 		const newMessage = {
 			author,
 			text,
 		};
-		dispatch(createMessage(newMessage, chatId));
+		dispatch(addMessage(newMessage, chatId));
 	};
+
 	const onSendMessage = (value) => {
 		sendMessage("user", value);
 	};
+
 	useEffect(() => {
 		if (!messageList || messageList.length === 0) {
 			return;
 		}
+
 		const tail = messageList[messageList.length - 1];
 		if (tail.author === "support") {
 			return;
@@ -37,9 +41,11 @@ export const Messages = () => {
 			clearInterval(answerBot);
 		};
 	}, [messageList]);
+
 	if (!hasChat) {
 		return <Redirect to="/chats" />;
 	}
+
 	return (
 		<>
 			<MessageList messageList={messageList} />
@@ -47,4 +53,5 @@ export const Messages = () => {
 		</>
 	);
 };
+
 //Messages MessageInput
