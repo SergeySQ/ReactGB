@@ -1,5 +1,5 @@
 import propTypes from "prop-types";
-import { Message } from "./Message";
+import { Message } from "./message";
 
 export const MessageList = (props) => {
 	return (

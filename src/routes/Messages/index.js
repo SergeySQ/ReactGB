@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, Redirect } from "react-router-dom";
-import { MessageInput } from "../../components/MessageInput";
-import { MessageList } from "../../components/MessageList";
-import { CHATS } from "../../mocks/chats";
+import { useDispatch, useSelector } from "react-redux";
+import { MessageInput } from "../../components/messageInput";
+import { MessageList } from "../../components/messageList";
+import { getChatMessagesById } from "../../store/messages/selectors";
+import { addMessage } from "../../store/messages/actions";
+import { hasChatById } from "../../store/chats/selectors";
 
 export const Messages = () => {
 	const { chatId } = useParams();
-	const [messageList, setMessageList] = useState([]);
+	const dispatch = useDispatch();
+	const messageList = useSelector(getChatMessagesById(chatId));
+	const hasChat = useSelector(hasChatById(chatId));
 
 	const sendMessage = (author, text) => {
-		const newMessageList = [...messageList];
 		const newMessage = {
 			author,
 			text,
 		};
-		newMessageList.push(newMessage);
-		setMessageList(newMessageList);
+		dispatch(addMessage(newMessage, chatId));
 	};
 
 	const onSendMessage = (value) => {
@@ -23,19 +26,23 @@ export const Messages = () => {
 	};
 
 	useEffect(() => {
-		if (messageList.length === 0) {
+		if (!messageList || messageList.length === 0) {
 			return;
 		}
 
 		const tail = messageList[messageList.length - 1];
-		if (tail.author === "bot") {
+		if (tail.author === "support") {
 			return;
 		}
-
-		sendMessage("bot", "hello");
+		const answerBot = setInterval(() => {
+			sendMessage("support", "Ваше сообщение не доставлено");
+		}, 2000);
+		return () => {
+			clearInterval(answerBot);
+		};
 	}, [messageList]);
 
-	if (!CHATS.find(({ id }) => id === chatId)) {
+	if (!hasChat) {
 		return <Redirect to="/chats" />;
 	}
 
@@ -46,3 +53,5 @@ export const Messages = () => {
 		</>
 	);
 };
+
+//Messages MessageInput

@@ -1,7 +1,5 @@
-import { ChatMain } from "./components/index.js";
+import { ChatMain } from "./components/index";
 
-const App = () => {
+export const App = () => {
 	return <ChatMain />;
 };
-
-export default App;
