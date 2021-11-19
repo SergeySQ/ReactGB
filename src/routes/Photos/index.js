@@ -21,7 +21,7 @@ export const Photos = () => {
 	};
 	useEffect(() => {
 		dispatch(getRandomPhotos);
-	}, []);
+	});
 
 	return (
 		<div>

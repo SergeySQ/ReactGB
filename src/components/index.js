@@ -43,10 +43,10 @@ export const ChatMain = () => {
 							</Toolbar>
 						</AppBar>
 						<Switch>
+							<Route component={Photos} path="/photos" />
 							<Route component={Chats} path="/chats" />
 							<Route component={Profile} path="/profile" />
 							<Route component={HelloChat} path="/" />
-							<Route component={Photos} path="/photos" />
 						</Switch>
 					</BrowserRouter>
 				</PersistGate>
