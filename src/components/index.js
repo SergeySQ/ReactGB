@@ -6,8 +6,7 @@ import { Provider } from "react-redux";
 import { HelloChat } from "../routes/Home";
 import { Chats } from "../routes/Chats";
 import { Profile } from "../routes/Profile";
-import { Photos } from "../routes/Photos";
-
+import { Animals } from "../routes/Animals";
 export const ChatMain = () => {
 	return (
 		<div>
@@ -34,16 +33,16 @@ export const ChatMain = () => {
 									Chats
 								</Button>
 								<Button
-									to="/photos"
+									to="/animals"
 									component={Link}
 									color="inherit"
 								>
-									Photos
+									Animals
 								</Button>
 							</Toolbar>
 						</AppBar>
 						<Switch>
-							<Route component={Photos} path="/photos" />
+							<Route component={Animals} path="/animals" />
 							<Route component={Chats} path="/chats" />
 							<Route component={Profile} path="/profile" />
 							<Route component={HelloChat} path="/" />

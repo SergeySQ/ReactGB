@@ -2,30 +2,26 @@ import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
-import { profileReducer } from "../store/profile/reducer";
-import { messagesReducer } from "../store/messages/reducer";
-import { chatsReducer } from "../store/chats/reducer";
-import { photosReducer } from "../store/photos/reducer";
+import { profileReducer } from "./profile/reducer";
+import { messagesReducer } from "./messages/reducer";
+import { chatsReducer } from "./chats/reducer";
+import { animalReducer } from "./animals/reducer";
 
 const persistConfig = {
 	key: "root",
 	storage,
 };
-
 const rootReducer = combineReducers({
 	profile: profileReducer,
 	messages: messagesReducer,
 	chats: chatsReducer,
-	photos: photosReducer,
+	animals: animalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 export const store = createStore(
 	persistedReducer,
 	composeEnhancers(applyMiddleware(thunk)),
 );
-
 export const persistor = persistStore(store);

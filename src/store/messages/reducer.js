@@ -11,7 +11,10 @@ export const messagesReducer = (state = initialState, action) => {
 
 			const newMessages = { ...state.messages };
 
-			newMessages[chatId] = [...(newMessages[chatId] || []), message];
+			newMessages[chatId] = {
+				...(newMessages[chatId] || []),
+				message,
+			};
 
 			return {
 				messages: newMessages,
