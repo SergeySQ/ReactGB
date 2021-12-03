@@ -4,15 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ChatList } from "../../components/chatList";
+
 import { Messages } from "../Messages";
 import { getChatList } from "../../store/chats/selectors";
-import { createChat, removeChat, setChats } from "../../store/chats/actions";
-import { nanoid } from "nanoid";
-import { CHATS } from "../../mocks/chats";
+import { createChat } from "../../helpers";
+import { removeMessagesByChatIdWithThunk } from "../../store/messages/actions";
 import {
-	createMessage,
-	removeMessagesByChatId,
-} from "../../store/messages/actions";
+	addChatWithThunk,
+	removeChatWithThunk,
+	onTrackingAddChatWithThunk,
+	onTrackingRemoveChatWithThunk,
+	offTrackingAddChatWithThunk,
+	offTrackingRemoveChatWithThunk,
+} from "../../store/chats/actions";
 
 const useStyles = makeStyles({
 	wrapper: {
@@ -27,21 +31,22 @@ export const Chats = () => {
 	const classes = useStyles();
 
 	const onCreate = useCallback(() => {
-		dispatch(
-			createChat({
-				id: nanoid(),
-				name: "chatName",
-			}),
-		);
+		dispatch(addChatWithThunk(createChat("chat name")));
 	}, []);
 
-	const onDelete = (chatId) => {
-		dispatch(removeChat(chatId));
-		dispatch(removeMessagesByChatId(chatId));
-	};
+	const onDelete = useCallback((chatId) => {
+		dispatch(removeChatWithThunk(chatId));
+		dispatch(removeMessagesByChatIdWithThunk(chatId));
+	}, []);
 
 	useEffect(() => {
-		dispatch(setChats(CHATS));
+		dispatch(onTrackingAddChatWithThunk);
+		dispatch(onTrackingRemoveChatWithThunk);
+
+		return () => {
+			dispatch(offTrackingAddChatWithThunk);
+			dispatch(offTrackingRemoveChatWithThunk);
+		};
 	}, []);
 
 	return (
